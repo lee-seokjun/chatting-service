@@ -30,4 +30,13 @@ public class ChatController {
     public Flux<ChatRdo> findAll(){
         return chatService.findAll();
     }
+    @GetMapping("/sse/{userId}")
+    public Flux<ServerSentEvent<ChatRdo>> sse(
+//            @RequestHeader ("userId") String userId
+            @PathVariable String userId
+    ){
+        Sinks.Many<ChatRdo> sink  = chatService.getSink(userId);
+
+        return sink.asFlux().map(c-> ServerSentEvent.builder(c).build());
+    }
 }

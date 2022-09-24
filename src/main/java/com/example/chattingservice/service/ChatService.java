@@ -11,4 +11,5 @@ public interface ChatService {
     Mono<ChatRdo> createChat(String requestUserId, ChatCdo chatCdo);
     Flux<ChatRdo> findAll();
 
+    Sinks.Many<ChatRdo> getSink(String userId);
 }
