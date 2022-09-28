@@ -1,5 +1,8 @@
 package com.example.chattingservice.elastic;
 
+import com.example.chattingservice.dto.ChatDto;
+import com.example.chattingservice.vo.Channel;
+import com.example.chattingservice.vo.ChannelVo;
 import com.example.chattingservice.vo.ChatCdo;
 import com.example.chattingservice.vo.ChatRdo;
 import lombok.AllArgsConstructor;
@@ -20,12 +23,17 @@ public class Chat {
     private String chatId;
     private List<String> members;
     private String title;
+    private ChannelVo target;
 
-    public Chat(String userId, ChatCdo cdo) {
+    private Channel channel;
+    public Chat(String userId, ChatDto dto) {
         this.chatId = UUID.randomUUID().toString();
-        this.members = cdo.getMembers();
-        members.add(userId);
-        this.title = cdo.getTitle();
+        this.channel = dto.getChannel();
+        List<String> targetList = dto.getTargetMemberList();
+        targetList.add(userId);
+        this.members = targetList;
+        this.target = dto.getTargetItem();
+        this.title = dto.getTitle();
 
     }
     public  ChatRdo toRdo (){

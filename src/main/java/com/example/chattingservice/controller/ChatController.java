@@ -1,5 +1,6 @@
 package com.example.chattingservice.controller;
 
+import com.example.chattingservice.dto.ChatDto;
 import com.example.chattingservice.service.ChatService;
 import com.example.chattingservice.service.ChatServiceImpl;
 import com.example.chattingservice.vo.ChatCdo;
@@ -24,7 +25,7 @@ public class ChatController {
 
     @PostMapping
     public Mono<ChatRdo> createChat(@RequestHeader ("userId") String requestUserId, @RequestBody  ChatCdo chatCdo){
-        return chatService.createChat(requestUserId,chatCdo);
+        return chatService.createOrGetChat(requestUserId,new ModelMapper().map(chatCdo, ChatDto.class));
     }
     @GetMapping
     public Flux<ChatRdo> findAll(){
