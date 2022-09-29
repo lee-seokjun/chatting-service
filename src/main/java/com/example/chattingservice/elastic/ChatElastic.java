@@ -5,7 +5,7 @@ import org.springframework.data.elasticsearch.repository.ReactiveElasticsearchRe
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-    public interface ChatElasticSearch extends ReactiveElasticsearchRepository<Chat,String> {
+    public interface ChatElastic extends ReactiveElasticsearchRepository<Chat,String> {
         @Query("{ \"bool\" : { \"must\" : [ { \"query_string\" : { \"query\" : \"?0\", \"fields\" : [ \"members\" ] } }, { \"query_string\" : { \"query\" : \"?2\", \"fields\" : [ \"?1\" ] } } ] } }")
         Mono<Chat> findByTargetIdAndUserId(String userId,String targetName , String targetId );
         @Query("{\"match\": {\"members\": {\"query\": \"?0\"}}}")

@@ -2,7 +2,7 @@ package com.example.chattingservice.service;
 
 import com.example.chattingservice.dto.ChatDto;
 import com.example.chattingservice.elastic.Chat;
-import com.example.chattingservice.elastic.ChatElasticSearch;
+import com.example.chattingservice.elastic.ChatElastic;
 import com.example.chattingservice.vo.ChatRdo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,9 +17,9 @@ import java.util.*;
 @Slf4j
 public class ChatServiceImpl  implements ChatService{
 
-    private final ChatElasticSearch respository;
+    private final ChatElastic respository;
     private Map<String,Sinks.Many<ChatRdo>> sinks;
-    public ChatServiceImpl(ChatElasticSearch respository) {
+    public ChatServiceImpl(ChatElastic respository) {
 
         sinks = new HashMap<>();
         this.respository = respository;
