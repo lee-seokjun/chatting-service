@@ -58,6 +58,12 @@ public class ChatServiceImpl  implements ChatService{
                 .map(Chat::toRdo);
     }
     @Override
+    public Flux<ChatRdo> findMyChat(String requestUserId) {
+        return respository.findByUserId(requestUserId)
+                .map(Chat::toRdo);
+    }
+
+    @Override
     public Flux<ChatRdo> findAll() {
 
         return  respository.findAll().map(Chat::toRdo);

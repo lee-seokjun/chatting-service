@@ -27,6 +27,11 @@ public class ChatController {
     public Mono<ChatRdo> createChat(@RequestHeader ("userId") String requestUserId, @RequestBody  ChatCdo chatCdo){
         return chatService.createOrGetChat(requestUserId,new ModelMapper().map(chatCdo, ChatDto.class));
     }
+    @GetMapping("/mychat")
+    public Flux<ChatRdo> findMyChat(@RequestHeader ("userId") String requestUserId)
+    {
+        return chatService.findMyChat(requestUserId);
+    }
     @GetMapping
     public Flux<ChatRdo> findAll(){
         return chatService.findAll();
