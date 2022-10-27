@@ -8,8 +8,10 @@ import com.example.chattingservice.elastic.ChatMessageElastic;
 import com.example.chattingservice.kafka.KafkaProducer;
 import com.example.chattingservice.vo.ChatMessageRdo;
 import lombok.extern.slf4j.Slf4j;
+import org.infinispan.Cache;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,12 +25,17 @@ public class ChattingServiceImpl implements ChattingService{
     private final ChatMessageElastic repository;
     private final ChatElastic chatRepository;
     private final KafkaProducer kafkaProducer;
+    private final Cache<String, SseEmitter> sseEmitterCache;
     public ChattingServiceImpl( ChatMessageElastic repository
             ,ChatElastic chatRepository
-            ,KafkaProducer kafkaProducer) {
+            ,KafkaProducer kafkaProducer
+            ,Cache<String, SseEmitter> sseEmitterCache
+
+    ) {
         this.repository = repository;
         this.chatRepository =chatRepository;
         this.kafkaProducer =kafkaProducer;
+        this.sseEmitterCache =sseEmitterCache;
     }
 
     @Override
@@ -67,5 +74,13 @@ public class ChattingServiceImpl implements ChattingService{
         return repository.findByChatId(chatId)
                 .map(ChatMessage::toRdo);
 
+    }
+
+    @Override
+    public Mono<SseEmitter> createEmitter(String chatId) {
+        SseEmitter  sseEmitter = new SseEmitter( 10l * 60l * 1000l);
+        String eventName = chatId+"_"+System.currentTimeMillis();
+        sseEmitterCache.put(eventName, sseEmitter);
+        return Mono.just(sseEmitter);
     }
 }
