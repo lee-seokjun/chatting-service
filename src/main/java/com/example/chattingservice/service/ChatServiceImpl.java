@@ -50,7 +50,13 @@ public class ChatServiceImpl  implements ChatService{
         {
             return respository.save(chat)
                     .map(Chat::toRdo)
-                    .doOnNext(rdo ->rdo.getMembers().forEach(m -> sinks.get(m).tryEmitNext(rdo)));
+                    .doOnNext(rdo ->rdo.getMembers().forEach(
+                            m -> {
+                                if(sinks.get(m)!=null)
+                                {
+                                    sinks.get(m).tryEmitNext(rdo);
+                                }
+                            }));
                     //채팅창 멤버 모두에게 sse 전송
         }
 

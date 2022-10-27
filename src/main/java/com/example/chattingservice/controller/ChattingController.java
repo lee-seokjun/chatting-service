@@ -34,5 +34,10 @@ public class ChattingController {
 
         return service.getMessages(chatId);
     }
+    @CrossOrigin(originPatterns = "*", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("/sse/{chatId}")
+    public Mono<SseEmitter> sse(@PathVariable String chatId){
 
+        return service.createEmitter(chatId);
+    }
 }

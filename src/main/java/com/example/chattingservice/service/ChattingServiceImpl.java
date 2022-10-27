@@ -52,7 +52,7 @@ public class ChattingServiceImpl implements ChattingService{
                             {
                                 repository.save(chatMessage).log()
                                 .map(entity->entity.toKafka(c.getMembers()))
-//                                .doOnNext(m->kafkaProducer.send("message-send",m))
+                                .doOnNext(m->kafkaProducer.send("message-send",m))
                                 .subscribe();
                             }
                         }

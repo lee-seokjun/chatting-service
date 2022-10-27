@@ -15,6 +15,7 @@ import reactor.core.publisher.Sinks;
 
 @RestController
 @RequestMapping("/chat")
+@CrossOrigin(originPatterns = "*", allowedHeaders = "*", allowCredentials = "true")
 public class ChatController {
     protected final ChatService chatService;
     private ModelMapper mapper;
